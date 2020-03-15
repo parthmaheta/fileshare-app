@@ -1,0 +1,27 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FileShare</title>
+    <link rel="stylesheet" href="css/main.css" type="text/css"/>
+</head>
+<body>
+     <h4>FileShare</h4>
+     
+
+
+    <form action='/user/' id='form'>
+            <div class='form-container' ondrop="drop(event)" ondragover="allowDrop(event)">
+                <span>drag and drop file here</span>
+                <input type='file' name="myFiles" id='file' multiple onchange="getFile(event)"/>   <br>
+                <div id='filename'>
+                    
+                </div>
+                <button class='btn' onclick="submitForm()">Submit</button>
+            </div>
+    </form>
+
+
+</body>
+<script src='js/index.js'></script>
+</html>

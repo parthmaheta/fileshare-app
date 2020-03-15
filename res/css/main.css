@@ -1,0 +1,51 @@
+*{
+    box-sizing: border-box;
+}
+.form-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 250px;
+    margin:10px auto;
+    width:60%;
+    border: 1px solid crimson;
+    box-shadow: 3px 5px 6px 3px lightblue;
+}
+#file::-webkit-file-upload-button{
+    visibility: hidden;
+}
+#file{
+    border: 1px solid crimson;
+    border-radius: 10px;
+    color:chocolate;
+    height: 30px;
+    text-align: left;
+    
+}
+#file:hover{
+    border: 1px solid cadetblue;
+}
+
+.btn{
+    display: inline-block;
+    width: 80px;
+    height: 40px;
+    color:darkcyan;
+    background: transparent;
+    border: 1px solid darkcyan;
+    border-radius: 5px;
+}
+.x-btn{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    color:red;
+    background: transparent;
+    border: 1px solid red;
+    border-radius: 5px;
+    margin-left: 20px;    
+}
+.x-btn:hover{
+    color: white;
+    background-color: red;
+}

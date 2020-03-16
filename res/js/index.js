@@ -33,12 +33,11 @@ function drop(e){
 
 }
 function printFileName(file,index){
-    let fileNode=document.getElementById('filename')
+    let fileNode=document.getElementById('file-container')
 
     let divNode=document.createElement('DIV')
 
     let node=document.createElement('SPAN')
-    node.setAttribute('data-index',index)
     node.innerText=file
 
     let button=getButton(index)
@@ -67,17 +66,72 @@ function removeNode(e){
 }
 
 function submitForm(){
+    let count=0;
     for(let i=0;i<filesArray.length;i++)
       {
           if(filesArray[i])
-           formdata.append('myFiles',filesArray[i])
+           {   if(count>20)
+                {alert('cant upload more than 20 files')
+                 formdata=new FormData()
+                 return
+                }
+               formdata.append('myFiles',filesArray[i])
+               count++
+           }
       }
-
-    fetch('http://localhost:8080/upload',{
+    if(count>0)
+    { fetch('/upload',{
         method:'post',
         body:formdata}
         )
-        .then(data=>data.text().then(m=>console.log(m)))
+        .then(data=>data.text().then(link=>{
+            removeData()
+           showlink(link)
+        }))
          .catch(e=>console.log(e))
 
+         
+         showUploading();
+    }
+    else
+        alert('no file')
+    
+}
+function removeData(){
+    filesArray=[]
+    formdata=new FormData()
+    let fileBox=document.getElementById('file-container')
+    fileBox.style.opacity='1'
+    fileBox.style.pointerEvents='auto'
+    fileBox.innerHTML=''  
+    document.getElementById('upload-msg').style.display='none'
+ 
+}
+function showUploading(){
+    let fileBox=document.getElementById('file-container')
+
+    document.getElementById('drag-msg').style.display='none'
+    document.getElementById('upload-msg').style.display='block'
+    document.getElementById('submit').style.display='none'
+    document.getElementById('file').style.display='none'
+
+    fileBox.style.opacity='0.6'
+    fileBox.style.pointerEvents='none'
+}
+function showlink(link){
+    
+    document.getElementById('link-container').style.display='block'
+    document.getElementById('link').href='./'+link
+    document.getElementById('link').innerText=location.href+link
+}
+
+function copyUrl(e){
+    
+    var textArea = document.createElement("textarea")
+    textArea.value = document.getElementById('link').innerText
+    document.body.appendChild(textArea)
+    textArea.select()
+    document.execCommand("Copy")
+    textArea.remove()
+    e.target.innerText='Copied'
 }

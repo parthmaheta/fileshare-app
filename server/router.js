@@ -5,7 +5,7 @@ const multer=require('multer')
 const mongodb=require('mongodb').MongoClient
 const zip=require('adm-zip')
 
-const uri = "mongodb+srv://user:user_123@parthcluster-sseeb.mongodb.net/test?retryWrites=true&w=majority";
+
 
 const client=new mongodb(uri,{useNewUrlParser:true,useUnifiedTopology:true})
 const con=client.connect()

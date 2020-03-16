@@ -5,7 +5,7 @@ const multer=require('multer')
 const mongodb=require('mongodb').MongoClient
 const zip=require('adm-zip')
 
-
+const uri = process.env.MONGOLAB_URI
 
 const client=new mongodb(uri,{useNewUrlParser:true,useUnifiedTopology:true})
 const con=client.connect()

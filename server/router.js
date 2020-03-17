@@ -1,5 +1,6 @@
 const express=require("express")
 const fs=require('fs')
+const path=require('path')
 const session=require('express-session')
 const multer=require('multer')
 const mongodb=require('mongodb').MongoClient
@@ -53,11 +54,11 @@ Router.post('/upload',Upload.array('myFiles',20),(req,res)=>{
 
             
 
-            db.collection('main').insertOne({'dir':req.session.dir,'id':id},(err,rs)=>{
-            
+            db.collection('main').insertOne({'dir':Number(req.session.dir),'id':id},(err,rs)=>{
+                delete req.session.dir  
                 db.collection('main').find({}).sort({'_id':-1}).limit(1).toArray((err,rs)=>{                
                     res.send(rs[0].id)
-                    delete req.session.dir
+                    
                 })
             })
         })
@@ -66,6 +67,35 @@ Router.post('/upload',Upload.array('myFiles',20),(req,res)=>{
     else
     res.send('no file')
     
+})
+
+Router.get('/delete',(req,res)=>{
+    
+    let d=Date.now()-604800000
+
+    const db=client.db('fileshare')
+    db.collection('main').deleteMany({'dir':{$lt:d}},(err,result)=>{
+      if(err)
+       {
+           console.log('cant delete')
+           return
+       }
+       res.send(''+result.deletedCount)
+
+    })
+
+    fs.readdir('./res/users/', function(err, files) {
+        if (err)
+            console.log(err);
+        else
+            files.map(function(f) {
+                if(f<d)
+                  removeDir('./res/users/'+f)
+            });
+                        
+    })
+
+
 })
 
 Router.get('/:id',(req,res)=>{
@@ -114,6 +144,24 @@ function getRandomString(){
     return chars[Math.floor(Math.random()*61)]+chars[Math.floor(Math.random()*61)]+chars[Math.floor(Math.random()*61)]+chars[Math.floor(Math.random()*61)]+chars[Math.floor(Math.random()*61)]
 }
 
+const removeDir = function(path) {
+    if (fs.existsSync(path)) {
+      const files = fs.readdirSync(path)
+   
+      if (files.length > 0) {
+        files.forEach(function(filename) {
+          if (fs.statSync(path + "/" + filename).isDirectory()) {
+            removeDir(path + "/" + filename)
+          } else {
+            fs.unlinkSync(path + "/" + filename)
+          }
+        })
+        fs.rmdirSync(path)
+      } else {
+        fs.rmdirSync(path)
+      }
+    }
+  }
 
 module.exports=Router
 

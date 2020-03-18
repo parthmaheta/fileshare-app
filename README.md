@@ -1,4 +1,4 @@
-https://https://fileshare-app.herokuapp.com/
+https://fileshare-app.herokuapp.com/
 
 
 project id=1332020-1
